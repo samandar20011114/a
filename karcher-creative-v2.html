@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Karcher — Mashinangizni Uyda Yuving</title>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1379018163533211');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1379018163533211&ev=PageView&noscript=1"/></noscript>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+    :root {
+        --ink:   #0A0A0B;
+        --ink2:  #141418;
+        --ink3:  #1C1C22;
+        --smoke: #2A2A32;
+        --ash:   #8A8A94;
+        --bone:  #E8E8EC;
+        --white: #F5F5F7;
+        --fire:  #FF4500;
+        --fire2: #FF6A35;
+        --amber: #FFB347;
+        --red:   #FF2020;
+        --green: #22C55E;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{overflow-x:hidden;}
+    body{
+        font-family:'Barlow',sans-serif;
+        background:var(--ink);
+        color:var(--bone);
+        overflow-x:hidden;
+        padding-bottom:76px;
+    }
+
+    /* TICKER */
+    .ticker{background:var(--fire);padding:0.4rem 0;overflow:hidden;}
+    .ticker-inner{display:flex;white-space:nowrap;animation:tick 16s linear infinite;}
+    .ti{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;padding:0 1.8rem;flex-shrink:0;}
+    @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* HERO */
+    .hero{
+        padding:1.6rem 1.2rem 0;
+        background:linear-gradient(180deg,#0E0E12 0%,var(--ink) 100%);
+        position:relative;overflow:hidden;
+    }
+    .hero::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--fire),var(--amber),var(--fire),transparent);}
+
+    .hero-badge{
+        display:inline-flex;align-items:center;gap:0.45rem;
+        background:rgba(255,69,0,0.1);border:1px solid rgba(255,69,0,0.3);
+        padding:0.35rem 0.8rem;margin-bottom:0.9rem;
+        font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;
+        color:var(--fire2);letter-spacing:1.8px;text-transform:uppercase;
+    }
+    .bdot{width:5px;height:5px;border-radius:50%;background:var(--fire);animation:bp 1.2s infinite;box-shadow:0 0 5px var(--fire);}
+    @keyframes bp{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    .hero-h{
+        font-family:'Bebas Neue',sans-serif;
+        font-size:clamp(2.8rem,13vw,3.6rem);
+        line-height:0.9;color:var(--white);letter-spacing:1px;margin-bottom:0.45rem;
+    }
+    .hero-h .fw{color:var(--fire);display:block;text-shadow:0 0 30px rgba(255,69,0,0.35);}
+    .hero-sub{
+        font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:600;
+        color:var(--ash);margin-bottom:1.5rem;max-width:300px;line-height:1.4;
+    }
+    .hero-sub b{color:var(--bone);}
+
+    /* SLIDER */
+    .slider-wrap{
+        position:relative;margin:0 -1.2rem;
+        background:linear-gradient(180deg,var(--ink3) 0%,var(--ink) 100%);
+        border-top:1px solid var(--smoke);border-bottom:1px solid var(--smoke);
+        overflow:hidden;cursor:grab;
+    }
+    .slider-wrap:active{cursor:grabbing;}
+    .slider-wrap::before{
+        content:'';position:absolute;inset:0;
+        background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(255,69,0,0.08) 0%,transparent 70%);
+        pointer-events:none;z-index:1;
+    }
+    .slider-track{display:flex;transition:transform 0.42s cubic-bezier(.4,0,.2,1);will-change:transform;user-select:none;}
+    .slide{
+        flex-shrink:0;width:100%;
+        height:48vw;min-height:240px;max-height:320px;
+        display:flex;align-items:center;justify-content:center;position:relative;z-index:2;
+    }
+    .slide img{height:88%;width:88%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 10px 28px rgba(0,0,0,0.6));-webkit-user-drag:none;}
+
+    /* corner */
+    .fc{position:absolute;width:18px;height:18px;border-color:var(--fire);z-index:5;pointer-events:none;}
+    .fc.tl{top:8px;left:10px;border-top:2px solid;border-left:2px solid;}
+    .fc.br{bottom:8px;right:10px;border-bottom:2px solid;border-right:2px solid;border-color:var(--smoke);}
+
+    /* dots */
+    .sdots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:10;}
+    .sdot{width:5px;height:5px;background:var(--smoke);cursor:pointer;transition:all .3s;border-radius:1px;}
+    .sdot.on{background:var(--fire);width:18px;box-shadow:0 0 7px rgba(255,69,0,0.6);}
+
+    /* THUMBNAILS */
+    .thumbs{display:flex;gap:0.45rem;padding:0.6rem 1.2rem;overflow-x:auto;scrollbar-width:none;background:var(--ink2);border-bottom:1px solid var(--smoke);}
+    .thumbs::-webkit-scrollbar{display:none;}
+    .thumb{flex-shrink:0;width:52px;height:52px;border:1px solid var(--smoke);overflow:hidden;cursor:pointer;position:relative;background:var(--ink);}
+    .thumb::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);transition:opacity .2s;}
+    .thumb.on{border-color:var(--fire);border-bottom-width:2px;}
+    .thumb.on::after{opacity:0;}
+    .thumb img{width:100%;height:100%;object-fit:cover;}
+
+    /* BODY */
+    .wrap{padding:0 1.2rem;}
+
+    /* SPECS STRIP — 4 in a row */
+    .specs-strip{
+        display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+        background:var(--smoke);border:1px solid var(--smoke);
+        margin:1.2rem 0 1rem;
+    }
+    .sc{background:var(--ink2);padding:0.75rem 0.4rem;text-align:center;}
+    .sc-icon{font-size:1.2rem;margin-bottom:0.2rem;}
+    .sc-val{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:0.12rem;letter-spacing:0.3px;}
+    .sc-lbl{font-size:0.52rem;color:var(--ash);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+
+    /* PRICE ROW */
+    .price-row{
+        display:flex;align-items:center;gap:0.7rem;
+        padding:0.9rem 1rem;
+        background:var(--ink2);border:1px solid var(--smoke);
+        border-left:3px solid var(--fire);margin-bottom:0.7rem;
+    }
+    .big-price{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--white);line-height:1;letter-spacing:1px;}
+    .psom{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;color:var(--ash);letter-spacing:1.5px;text-transform:uppercase;}
+    .old-p{font-size:0.82rem;color:var(--ash);text-decoration:line-through;}
+    .save-tag{
+        margin-left:auto;
+        background:rgba(255,69,0,0.15);border:1px solid rgba(255,69,0,0.35);
+        padding:0.22rem 0.6rem;font-family:'Barlow Condensed',sans-serif;
+        font-size:0.75rem;font-weight:700;color:var(--fire2);letter-spacing:0.5px;
+    }
+
+    /* TIMER + STOCK */
+    .timer-stock{
+        display:flex;align-items:center;gap:0.5rem;
+        padding:0.6rem 0.8rem;background:var(--ink2);border:1px solid var(--smoke);
+        margin-bottom:0.7rem;
+    }
+    .ts-label{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;color:var(--ash);letter-spacing:1px;text-transform:uppercase;}
+    .ts-timer{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--fire2);letter-spacing:2px;margin-left:auto;}
+    .tc{animation:tc .9s infinite;} @keyframes tc{0%,100%{opacity:1}50%{opacity:0.15}}
+
+    /* Stock bar */
+    .stock-row{margin-bottom:1.1rem;}
+    .stock-hdr{display:flex;justify-content:space-between;margin-bottom:0.35rem;}
+    .stock-lbl{font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;color:var(--ash);letter-spacing:1px;text-transform:uppercase;}
+    .stock-cnt{font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:800;color:var(--red);letter-spacing:0.5px;}
+    .stock-track{height:6px;background:var(--smoke);}
+    .stock-fill{height:100%;background:linear-gradient(90deg,var(--fire),var(--amber));width:22%;box-shadow:0 0 7px rgba(255,69,0,0.5);transition:width 1s;}
+
+    /* FORM */
+    .form-section{padding:0 0 0.5rem;}
+    .form-eyebrow{
+        font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--white);
+        letter-spacing:2px;margin-bottom:0.2rem;
+    }
+    .form-note{font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:600;color:var(--ash);margin-bottom:0.85rem;}
+    .form-note b{color:var(--fire2);}
+    .fi{
+        width:100%;padding:0.9rem 1rem;
+        background:var(--ink2);border:1px solid var(--smoke);border-bottom:2px solid var(--ink3);
+        color:var(--white);font-family:'Barlow',sans-serif;font-size:0.98rem;font-weight:600;
+        outline:none;transition:all .22s;margin-bottom:0.5rem;letter-spacing:0.3px;
+    }
+    .fi::placeholder{color:rgba(138,138,148,0.4);font-weight:400;}
+    .fi:focus{border-color:var(--fire);border-bottom-color:var(--fire);background:#131318;box-shadow:0 0 0 3px rgba(255,69,0,0.1);}
+    .fi:disabled{opacity:0.5;cursor:not-allowed;}
+
+    .sbtn{
+        width:100%;padding:1.05rem;background:var(--fire);color:#fff;border:none;
+        font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;
+        cursor:pointer;position:relative;overflow:hidden;
+        box-shadow:0 6px 24px rgba(255,69,0,0.45);transition:all .22s;
+    }
+    .sbtn::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent);animation:shine 3s infinite;}
+    @keyframes shine{0%{left:-100%}100%{left:250%}}
+    .sbtn:hover{background:var(--fire2);box-shadow:0 8px 32px rgba(255,69,0,0.6);transform:translateY(-1px);}
+    .sbtn:active{transform:translateY(0);}
+    .sbtn:disabled{background:var(--smoke);box-shadow:none;cursor:not-allowed;transform:none;}
+    .sbtn:disabled::before{display:none;}
+
+    /* TRUST */
+    .trust{display:flex;justify-content:space-between;padding:0.8rem 0 1.2rem;}
+    .tri{display:flex;align-items:center;gap:0.3rem;font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;color:var(--ash);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
+
+    /* STICKY */
+    .sticky{
+        position:fixed;bottom:0;left:0;right:0;z-index:600;
+        background:rgba(10,10,11,0.97);border-top:1px solid var(--smoke);
+        backdrop-filter:blur(12px);
+        padding:0.65rem 1.2rem;display:flex;gap:0.8rem;align-items:center;
+        transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);
+    }
+    .sticky.show{transform:translateY(0);}
+    .sp-block .sp-val{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--white);line-height:1;}
+    .sp-block .sp-old{font-size:0.6rem;color:var(--ash);text-decoration:line-through;}
+    .stick-btn{
+        flex:1;padding:0.82rem 0.5rem;background:var(--fire);color:#fff;border:none;
+        font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:2px;
+        cursor:pointer;box-shadow:0 4px 14px rgba(255,69,0,0.4);transition:all .2s;
+        position:relative;overflow:hidden;
+    }
+    .stick-btn::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);animation:shine 3s 1s infinite;}
+    .stick-btn:active{transform:scale(0.98);}
+
+    /* LIVE NOTIF */
+    .notif{
+        position:fixed;bottom:88px;left:12px;right:12px;max-width:340px;z-index:700;
+        background:var(--ink2);border:1px solid var(--smoke);border-left:3px solid var(--fire);
+        padding:0.65rem 0.85rem;display:flex;align-items:center;gap:0.6rem;
+        box-shadow:0 8px 22px rgba(0,0,0,0.5);
+        transform:translateY(16px);opacity:0;pointer-events:none;
+        transition:all .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .notif.show{transform:translateY(0);opacity:1;}
+    .ni{width:32px;height:32px;background:linear-gradient(135deg,var(--fire),var(--fire2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+    .nn{font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:800;color:var(--white);}
+    .nm{font-size:0.72rem;color:var(--ash);font-weight:500;}
+    .nt{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;color:var(--fire2);font-weight:700;flex-shrink:0;}
+
+    /* MODAL */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2000;padding:1rem;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+    .modal.on{display:flex;}
+    .mbox{background:var(--ink2);border:1px solid var(--smoke);border-top:3px solid var(--fire);padding:1.8rem 1.4rem;max-width:440px;width:100%;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.7);}
+    .mclose{position:absolute;top:.9rem;right:.9rem;width:2rem;height:2rem;background:transparent;border:1px solid var(--smoke);color:var(--ash);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+    .mclose:hover{border-color:var(--fire);color:var(--fire);}
+    .mtitle{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--white);margin-bottom:1.1rem;text-align:center;}
+
+    @media(max-width:480px){
+        .hero-h{font-size:clamp(2.5rem,12vw,3rem);}
+        .sc-val{font-size:0.85rem;}
+        .sc-icon{font-size:1rem;}
+    }
+    @media(max-width:360px){
+        .big-price{font-size:1.95rem;}
+        .specs-strip{grid-template-columns:repeat(2,1fr);}
+    }
+    </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-inner">
+        <span class="ti">🔥 FAQAT 16 TA QOLDI</span>
+        <span class="ti">◆ BEPUL YETKAZIB BERISH</span>
+        <span class="ti">◆ AVVAL KO'RING KEYIN TO'LANG</span>
+        <span class="ti">◆ 🔥 NARX BUGUN TUSHDI</span>
+        <span class="ti">🔥 FAQAT 16 TA QOLDI</span>
+        <span class="ti">◆ BEPUL YETKAZIB BERISH</span>
+        <span class="ti">◆ AVVAL KO'RING KEYIN TO'LANG</span>
+        <span class="ti">◆ 🔥 NARX BUGUN TUSHDI</span>
+    </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-badge"><div class="bdot"></div>Bugun 269 000 so'm — ertaga qimmatroq</div>
+    <h1 class="hero-h">MASHINANGIZ<br><span class="fw">KIRLIK</span>KO'RINMASIN</h1>
+    <p class="hero-sub"><b>Mini Karcher</b> — 10 daqiqada, uyda, professional natija.</p>
+</div>
+
+<!-- SLIDER -->
+<div class="slider-wrap" id="sw">
+    <div class="fc tl"></div>
+    <div class="fc br"></div>
+    <div class="slider-track" id="st">
+        <div class="slide"><img src="https://i.postimg.cc/pTtfP7Rd/photo-2026-05-06-01-00-48.webp" alt="1"></div>
+        <div class="slide"><img src="https://i.postimg.cc/QC8cTTBZ/photo-2026-05-06-01-00-51.webp" alt="2"></div>
+        <div class="slide"><img src="https://i.postimg.cc/HWzwCBNB/photo-2026-05-06-01-00-55.webp" alt="3"></div>
+        <div class="slide"><img src="https://i.postimg.cc/qM78B2Vz/photo-2026-05-06-01-00-58.webp" alt="4"></div>
+    </div>
+    <div class="sdots">
+        <div class="sdot on" onclick="go(0)"></div>
+        <div class="sdot" onclick="go(1)"></div>
+        <div class="sdot" onclick="go(2)"></div>
+        <div class="sdot" onclick="go(3)"></div>
+    </div>
+</div>
+
+<!-- THUMBNAILS -->
+<div class="thumbs">
+    <div class="thumb on" onclick="go(0)"><img src="https://i.postimg.cc/pTtfP7Rd/photo-2026-05-06-01-00-48.webp" alt="1"></div>
+    <div class="thumb" onclick="go(1)"><img src="https://i.postimg.cc/QC8cTTBZ/photo-2026-05-06-01-00-51.webp" alt="2"></div>
+    <div class="thumb" onclick="go(2)"><img src="https://i.postimg.cc/HWzwCBNB/photo-2026-05-06-01-00-55.webp" alt="3"></div>
+    <div class="thumb" onclick="go(3)"><img src="https://i.postimg.cc/qM78B2Vz/photo-2026-05-06-01-00-58.webp" alt="4"></div>
+</div>
+
+<div class="wrap">
+
+    <!-- SPECS -->
+    <div class="specs-strip">
+        <div class="sc"><div class="sc-icon">💨</div><div class="sc-val">3 REJIM</div><div class="sc-lbl">Oqim</div></div>
+        <div class="sc"><div class="sc-icon">🫧</div><div class="sc-val">KO'PIK</div><div class="sc-lbl">Sepish</div></div>
+        <div class="sc"><div class="sc-icon">🔋</div><div class="sc-val">BATAREYA</div><div class="sc-lbl">Zaryadchi</div></div>
+        <div class="sc"><div class="sc-icon">🚗</div><div class="sc-val">PORTATIV</div><div class="sc-lbl">Istalgan joy</div></div>
+    </div>
+
+    <!-- PRICE -->
+    <div class="price-row">
+        <div>
+            <div class="big-price">269 000</div>
+            <div class="psom">SO'M</div>
+        </div>
+        <div class="old-p">429 000</div>
+        <div class="save-tag">−37%</div>
+    </div>
+
+    <!-- TIMER + STOCK -->
+    <div class="timer-stock">
+        <span class="ts-label">🔥 Aksiya tugashiga:</span>
+        <span class="ts-timer"><span id="th">00</span><span class="tc">:</span><span id="tm">00</span><span class="tc">:</span><span id="ts">00</span></span>
+    </div>
+
+    <div class="stock-row">
+        <div class="stock-hdr">
+            <span class="stock-lbl">Zaxira holati</span>
+            <span class="stock-cnt">⚠ FAQAT <span id="sn">16</span> TA QOLDI</span>
+        </div>
+        <div class="stock-track"><div class="stock-fill" id="sf"></div></div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-section" id="mf">
+        <div class="form-eyebrow">BUYURTMA BERING</div>
+        <p class="form-note">Operatorimiz <b>15 daqiqada</b> qo'ng'iroq qiladi</p>
+        <form id="orderForm">
+            <input type="text" class="fi" id="name" placeholder="Ismingiz" required>
+            <input type="tel" class="fi" id="phone" placeholder="+998 90 123 45 67" required>
+            <button type="submit" class="sbtn" id="mb">🚗 HOZIR BAND QILISH — 269 000 SO'M</button>
+        </form>
+        <div class="trust">
+            <div class="tri">🚀 1–3 kun</div>
+            <div class="tri">💳 Ko'rib to'lang</div>
+            <div class="tri">🔋 Zaryadchi bepul</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- STICKY -->
+<div class="sticky" id="sb">
+    <div class="sp-block">
+        <div class="sp-val">269 000</div>
+        <div class="sp-old">429 000 so'm</div>
+    </div>
+    <button class="stick-btn" onclick="scrollToForm()">🚗 HOZIR BAND QILISH</button>
+</div>
+
+<!-- LIVE NOTIF -->
+<div class="notif" id="notif">
+    <div class="ni" id="ni">🙋</div>
+    <div><div class="nn" id="nn">Akmal T.</div><div class="nm">Mini Karcher buyurtma berdi</div></div>
+    <div class="nt" id="nt">2 daq</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="mbox">
+        <button class="mclose" onclick="closeModal()">✕</button>
+        <div class="mtitle">BUYURTMA BERISH</div>
+        <form id="qf">
+            <input type="text" class="fi" id="qn" placeholder="Ismingiz" required>
+            <input type="tel" class="fi" id="qp" placeholder="+998 90 123 45 67" required>
+            <button type="submit" class="sbtn">🚗 HOZIR BAND QILISH</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// ── SLIDER ──
+const track=document.getElementById('st'), dots=document.querySelectorAll('.sdot'), thumbs=document.querySelectorAll('.thumb');
+let cur=0,asl;
+function go(i){cur=i;track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,j)=>d.classList.toggle('on',j===i));thumbs.forEach((t,j)=>t.classList.toggle('on',j===i));}
+function next(){go((cur+1)%4);} function prev(){go((cur-1+4)%4);}
+function startA(){asl=setInterval(next,4000);} function stopA(){clearInterval(asl);}
+
+const sw=document.getElementById('sw');
+let x0=0,y0=0,dr=false,dir=null;
+sw.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;dr=true;dir=null;stopA();},{passive:true});
+sw.addEventListener('touchmove',e=>{if(!dr)return;const dx=Math.abs(e.touches[0].clientX-x0),dy=Math.abs(e.touches[0].clientY-y0);if(!dir&&(dx>6||dy>6))dir=dx>dy?'h':'v';if(dir==='h')e.preventDefault();},{passive:false});
+sw.addEventListener('touchend',e=>{if(!dr)return;const d=e.changedTouches[0].clientX-x0;if(dir==='h'&&Math.abs(d)>45)d<0?next():prev();dr=false;dir=null;startA();},{passive:true});
+let mx=0,md=false,mdr=null;
+sw.addEventListener('mousedown',e=>{mx=e.clientX;md=true;mdr=null;stopA();});
+sw.addEventListener('mousemove',e=>{if(!md)return;if(!mdr&&Math.abs(e.clientX-mx)>6)mdr='h';if(mdr==='h')e.preventDefault();});
+sw.addEventListener('mouseup',e=>{if(!md)return;const d=e.clientX-mx;if(mdr==='h'&&Math.abs(d)>45)d<0?next():prev();md=false;mdr=null;startA();});
+sw.addEventListener('mouseleave',()=>{if(md){md=false;mdr=null;startA();}});
+startA();
+
+// ── TIMER ──
+function getTashkent(){const n=new Date();return new Date(n.getTime()+n.getTimezoneOffset()*60000+18000000);}
+function updateTimer(){
+    const now=getTashkent(),tom=new Date(now);
+    tom.setDate(tom.getDate()+1);tom.setHours(0,0,0,0);
+    const d=tom-now;
+    if(d<=0){['th','tm','ts'].forEach(id=>document.getElementById(id).textContent='00');return;}
+    document.getElementById('th').textContent=String(Math.floor(d/3600000)).padStart(2,'0');
+    document.getElementById('tm').textContent=String(Math.floor(d%3600000/60000)).padStart(2,'0');
+    document.getElementById('ts').textContent=String(Math.floor(d%60000/1000)).padStart(2,'0');
+}
+updateTimer();setInterval(updateTimer,1000);
+
+// ── STOCK ──
+let sn=16;
+function decStock(){if(sn<=8)return;sn--;document.getElementById('sn').textContent=sn;document.getElementById('sf').style.width=Math.max(11,Math.round(sn/74*100))+'%';}
+function schedStock(){setTimeout(()=>{decStock();schedStock();},(90+Math.random()*90)*1000);}
+schedStock();
+
+// ── PHONE ──
+function fmtP(el){el.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'');if(v.startsWith('998'))v=v.slice(3);if(v.length<=2)v='+998 '+v;else if(v.length<=5)v='+998 '+v.slice(0,2)+' '+v.slice(2);else if(v.length<=8)v='+998 '+v.slice(0,2)+' '+v.slice(2,5)+' '+v.slice(5);else v='+998 '+v.slice(0,2)+' '+v.slice(2,5)+' '+v.slice(5,7)+' '+v.slice(7,9);e.target.value=v;});}
+fmtP(document.getElementById('phone'));fmtP(document.getElementById('qp'));
+
+// ── STICKY ──
+const stickyEl=document.getElementById('sb'),mfEl=document.getElementById('mf');
+new IntersectionObserver(e=>{stickyEl.classList.toggle('show',!e[0].isIntersecting);},{threshold:0.3}).observe(mfEl);
+function scrollToForm(){mfEl.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>document.getElementById('name').focus(),600);}
+
+// ── COOLDOWN ──
+const CD=10*60*1000,SK='mkc_last';
+function getRem(){try{const l=parseInt(localStorage.getItem(SK)||'0',10);if(!l)return 0;const e=Date.now()-l;return e<CD?(CD-e):0;}catch(e){return 0;}}
+let cdInt=null;
+function applyCD(){
+    const r=getRem();
+    const btns=document.querySelectorAll('.sbtn'),inps=document.querySelectorAll('.fi');
+    if(r<=0){
+        btns.forEach(b=>{b.disabled=false;if(b.id==='mb')b.textContent='🚗 HOZIR BAND QILISH — 269 000 SO\'M';else b.textContent='🚗 HOZIR BAND QILISH';});
+        inps.forEach(i=>i.disabled=false);
+        if(cdInt){clearInterval(cdInt);cdInt=null;}return;
+    }
+    const m=Math.floor(r/60000),s=Math.floor((r%60000)/1000),txt=`KUTING — ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    btns.forEach(b=>{b.disabled=true;b.textContent=txt;});inps.forEach(i=>i.disabled=true);
+}
+function startCD(){applyCD();if(getRem()>0&&!cdInt)cdInt=setInterval(applyCD,1000);}
+startCD();
+
+// ── NOTIFICATIONS ──
+const notifs=[{n:'Akmal T.',t:'2 daq',i:'🙋'},{n:'Sardor M.',t:'5 daq',i:'👨'},{n:'Jasur K.',t:'9 daq',i:'🧑'},{n:'Bobur R.',t:'13 daq',i:'👤'},{n:'Nodir A.',t:'18 daq',i:'🙍'},{n:'Eldor B.',t:'24 daq',i:'👨'}];
+let ni=0;const nel=document.getElementById('notif');
+function showN(){const n=notifs[ni%notifs.length];document.getElementById('ni').textContent=n.i;document.getElementById('nn').textContent=n.n;document.getElementById('nt').textContent=n.t;nel.classList.add('show');setTimeout(()=>nel.classList.remove('show'),4000);ni++;}
+setTimeout(()=>{showN();setInterval(showN,22000);},5000);
+
+// ── SUBMIT ──
+let st=Date.now(),sub=false;
+const gT=()=>Math.floor((Date.now()-st)/1000);
+async function sendWH(n,p){const r=await fetch('https://hook.eu2.make.com/qum5cavx8mngr41wyiwhmszrxk5glwl7',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:n,phone:p,product:'Mini Karcher Portativ Yuvgich',price:"269,000 so'm",date:new Date().toISOString(),time_spent:gT()})});if(!r.ok)throw new Error('err');}
+async function sendTG(n,p){await fetch('https://api.telegram.org/bot6508841731:AAEz6m6ts0jYDO5mm-xtlf0nN00bquQrfWg/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:'-4793782009',text:`#MINIKARCHER\nYangi buyurtma! 🚗\nIsm: ${n}\nTelefon: ${p}\nNarx: 269,000 so'm\nVaqt: ${gT()} sek\nSana: ${new Date().toISOString()}`})});}
+async function handleSub(n,p,btn,form){
+    if(getRem()>0||sub)return;
+    sub=true;btn.disabled=true;btn.textContent='YUBORILMOQDA...';
+    try{
+        await sendWH(n,p);await sendTG(n,p);
+        try{localStorage.setItem(SK,Date.now().toString());}catch(e){}
+        startCD();form.reset();
+        window.location.href='https://oneexpress.creatium.site/karcherthank';
+    }catch(e){
+        alert("Xatolik yuz berdi. Qayta urinib ko'ring.");
+        sub=false;btn.disabled=false;
+        if(btn.id==='mb')btn.textContent='🚗 HOZIR BAND QILISH — 269 000 SO\'M';else btn.textContent='🚗 HOZIR BAND QILISH';
+    }
+}
+document.getElementById('orderForm').addEventListener('submit',async e=>{e.preventDefault();await handleSub(document.getElementById('name').value,document.getElementById('phone').value,e.target.querySelector('.sbtn'),e.target);});
+document.getElementById('qf').addEventListener('submit',async e=>{e.preventDefault();await handleSub(document.getElementById('qn').value,document.getElementById('qp').value,e.target.querySelector('.sbtn'),e.target);closeModal();});
+function closeModal(){document.getElementById('modal').classList.remove('on');document.body.style.overflow='auto';}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+</script>
+</body>
+</html>
